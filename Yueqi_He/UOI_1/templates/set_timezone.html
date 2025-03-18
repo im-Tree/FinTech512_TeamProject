@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Set Time Zone Preference</title>
+    <script>
+        // When the user types in the time zone prefix input field, the list of matching time zones is fetched via AJAX
+        function searchTimezone() {
+            let prefix = document.getElementById('timezone_prefix').value;
+            fetch('/search-timezone?prefix=' + prefix)
+                .then(response => response.json())
+                .then(data => {
+                    let list = document.getElementById('timezone_list');
+                    list.innerHTML = '';
+                    data.forEach(function(tz) {
+                        let option = document.createElement('option');
+                        option.value = tz;
+                        option.text = tz;
+                        list.appendChild(option);
+                    });
+                });
+        }
+        // When the user selects a time zone, the value is entered into the target time zone input field
+        function selectTimezone() {
+            let selected = document.getElementById('timezone_list').value;
+            document.getElementById('target_tz').value = selected;
+        }
+    </script>
+</head>
+<body>
+    <!-- add logo -->
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="max-width:200px;">
+    
+    <h1>Set Your Time Zone preference</h1>
+    <form action="/set_timezone" method="post">
+        <label for="timezone_prefix">Enter the time zone prefix (eg.  "America/New_York"):</label><br>
+        <input type="text" id="timezone_prefix" onkeyup="searchTimezone()"><br><br>
+        <label for="timezone_list">List of matched time zones:</label><br>
+        <select id="timezone_list" size="5" onchange="selectTimezone()"></select><br><br>
+        <label for="target_tz">Selected time zone:</label><br>
+        <input type="text" id="target_tz" name="target_tz" value="{{ current_tz }}"><br><br>
+        <input type="submit" value="Saving the time zone">
+    </form>
+    <p><a href="{{ url_for('dashboard') }}">return to dashboard</a></p>
+</body>
+</html>

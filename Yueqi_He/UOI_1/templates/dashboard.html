@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>dashboard</title>
+</head>
+<body>
+    <!-- add logo -->
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="max-width:200px;">
+    
+    <h1>Welcome, {{ user_info.name }}！</h1>
+    <img src="{{ user_info.picture }}" alt="user profile picture" width="100">
+    <p>Email: {{ user_info.email }}</p>
+    {% if user_timezone %}
+      <p>Currently set time zone: {{ user_timezone }}</p>
+    {% else %}
+      <p>You have not set a time zone preference, please <a href="{{ url_for('set_timezone') }}">set time zone</a></p>
+    {% endif %}
+    <hr>
+    <h2>Parsing Transfer Emails</h2>
+    <p>
+        <a href="{{ url_for('fetch_emails') }}">Get and parse BOA email (including time zone conversion)</a>
+    </p>
+    <hr>
+    <h2>Set Time Zone</h2>
+    <p>
+        <a href="{{ url_for('set_timezone') }}">go to the time zone Settings page</a>
+    </p>
+    <p>
+        <a href="{{ url_for('homepage') }}">return to homepage</a>
+    </p>
+</body>
+</html>
